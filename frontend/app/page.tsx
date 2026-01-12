@@ -32,7 +32,7 @@ export default function Home() {
       // Use relative URL in production (same domain), absolute URL in development
       const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
         ? 'http://localhost:8000' 
-        : ''
+        : process.env.NEXT_PUBLIC_BACKEND_URL || ''
       const res = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
