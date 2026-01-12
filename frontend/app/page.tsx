@@ -29,7 +29,11 @@ export default function Home() {
         return
       }
 
-      const res = await fetch('http://localhost:8000/api/chat', {
+      // Use relative URL in production (same domain), absolute URL in development
+      const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
+        ? 'http://localhost:8000' 
+        : ''
+      const res = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
