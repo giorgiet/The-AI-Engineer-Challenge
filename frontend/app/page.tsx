@@ -29,11 +29,14 @@ export default function Home() {
         return
       }
 
-      // Use relative URL in production (same domain), absolute URL in development
-      const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
-        ? 'http://localhost:8000' 
-        : process.env.NEXT_PUBLIC_BACKEND_URL || ''
-      const res = await fetch(`${apiUrl}/api/chat`, {
+      // Resolve backend base URL: env override > localhost > same domain
+      const envBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '')
+      const isLocalhost =
+        typeof window !== 'undefined' &&
+        window.location.hostname.includes('localhost')
+      const baseUrl = envBase || (isLocalhost ? 'http://localhost:8000' : '')
+
+      const res = await fetch(`${baseUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
